@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import com.test.demo.Entities.Node;
 
 @Repository
 public class AppDao {
@@ -16,15 +15,15 @@ public class AppDao {
 	@Autowired
 	EntityManagerFactory entityManagerFactory;
 
-	public <T> Node getNodebyId(String id, Class<T> classname) {
+	public <T> T getNodebyId(String id, Class<T> classname) {
 		Session session = null;
-		Node node = null;
+		T node = null;
 		try {
 			session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
 			@SuppressWarnings("deprecation")
 			Criteria criteria = session.createCriteria(classname);
 			criteria.add(Restrictions.eq("name", id));
-			node = (Node) criteria.uniqueResult();
+			node = (T) criteria.uniqueResult();
 			return node;
 		} catch (Exception e) {
 			e.printStackTrace();
